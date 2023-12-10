@@ -1,1 +1,426 @@
+#1.Reading and exporting files into R :
+
+#code:
+###Complete the codes.The codes were written for a different data set.
+##Make appropriate changes to extract the data we are using in the class.
+##Install the necessary packages
+rm(list = ls())
+# Define the widths based on the provided layout
+widths <- c(
+4, # File Identification
+3, # Schedule
+2, # Quarter
+2, # Visit
+1, # Sector
+2, # State/Ut Code
+2, # District Code
+3, # NSS-Region
+2, # Stratum
+2, # Sub-Stratum
+1, # Sub-Sample
+4, # Fod Sub-Region
+5, # FSU
+1, # Sample Sg/Sb No.
+1, # Second Stage Stratum No.
+2, # Sample Household Number
+2, # Month of Survey
+1, # Response Code
+1, # Survey Code
+1 # Reason for Substitution of original household
+)
+# Define the column names
+col.names <- c(
+"File_Identification",
+"Schedule",
+"Quarter",
+"Visit",
+"Sector",
+"State_Ut_Code",
+"District_Code",
+"NSS_Region",
+"Stratum",
+"Sub_Stratum",
+"Sub_Sample",
+"Fod_Sub_Region",
+"FSU",
+"Sample_Sg_Sb_No",
+"Second_Stage_Stratum_No",
+"Sample_Household_Number",
+"Month_of_Survey",
+"Response_Code",
+"Survey_Code",
+"Reason_for_Substitution"
+)
+# Read the data
+level1 <- read.fwf(
+file = "C:/Users/hp/Downloads/Lab1_7Aug/FHH_FV.TXT",
+widths = widths,
+col.names = col.names, n= 102063)
+level1
+## By including 'common-id'
+level2<-read.fwf(file="C:/Users/hp/Downloads/Lab1_7Aug/FPER_FV.TXT",
+widths=c(35,2,5,2,5,3,1,1,1,1,1,1,2,8,8,50,3,3,10),
+col.names=c("common-id", "level","filler", "hhsize", "NIC", "NCO",
+"hhtype","religion", "socialgrp", "latrinetype", "drainagetype",
+"source_of_drink_water", "primary_source_of_cookingenergy",
+"amt_med_insurance",
+"hh_cons_exp", "blank","NSS", "NSC","MLT"),
+n=65932)
+level2
+#install.packages("readr")
+library(readr)
+## using the 'readr' package
+level3<-read_fwf(file="C:/Users/hp/Downloads/Lab1_7Aug/FHH_FV.TXT",
+fwf_cols(fsuslno=c(4,8), sector=c(15, 15),
+subblockno=c(32,32),sssno=c(33,33),hhno=c(34,35),level=c(36,37),filler=c(38,40),
+personid=c(41,42), sex=c(43,43),ageatdeath=c(44,46),
+medicalatn=c(47,47),hospitalised=c(48,48),numhospitalised=c(49,50),pregnant=c(51,51),timeof
+death=c(52,52), nss=c(127,129), nsc=c(130,132), mlt=c(133, 142)),
+col_types =
+cols(fsuslno=col_character(),sector=col_character(),subblockno=col_character(),sssno=col_char
+acter(),hhno=col_character(),level = col_character(),filler =
+col_character(),personid=col_character(), sex=col_integer(),ageatdeath=col_integer(),
+medicalatn=col_integer(), hospitalised=col_integer(),
+numhospitalised=col_integer(), pregnant=col_integer(), timeofdeath=col_integer(),
+nss=col_character(), nsc=col_character(),mlt=col_character()))
+level3
+## using the 'readr' package
+level4<-
+read_fwf(file="C:/Users/hp/Downloads/Lab1_7Aug/FPER_FV.TXT",fwf_cols(fsuslno=c(4,8),
+sector=c(15, 15),
+subblockno=c(32,32),sssno=c(33,33),hhno=c(34,35),level=c(36,37),filler=c(38,40),
+personid=c(41,42),rltntohead=c(43,43),sex=c(44,44), age=c(45,47),
+maritalstatus=c(48,48),education=c(49,50),
+resident_hostel=c(51,51),hospitalised=c(52,52),
+numhospitalised=c(53,54),chronicailment=c(55,55),othrailment15days=c(56,56),othrailmentda
+ybefore=c(57,57),
+healthscheme=c(58,58),reporting=c(59,59), nss=c(127,129),
+nsc=c(130,132),mlt=c(133,142)),
+col_types =
+cols(fsuslno=col_character(),sector=col_character(),subblockno=col_character(),sssno=col_char
+acter(),hhno=col_character(),level = col_character(),filler =
+col_character(),personid=col_character(), rltntohead=col_integer(),
+sex=col_integer(),age=col_integer(),
+maritalstatus=col_integer(),education=col_integer(),resident_hostel=col_integer(),hospitalised
+=col_integer(),numhospitalised=col_integer(),chronicailment=col_integer(),othrailment15days
+=col_integer(),othrailmentdaybefore=col_integer(),
+healthscheme=col_integer(), reporting=col_integer(),nss=col_character(),
+nsc=col_character(), mlt=col_character()))
+
+
+#2.Instrumental Variables Analysis with Binscatter: An Empirical
+#Study on Wage Determinants:
+#code:
+#install.packages("colorspace")
+library(haven) # Read .dta files
+library(data.table) # For working with data
+library(fixest) # For regressions
+library(binsreg) # For binscatter
+## Load data
+# data <- haven::read_dta("https://github.com/Mixtape-Sessions/Instrumental￾Variables/blob/main/Exercises/Exercise1/angrist_krueger_91.dta?raw=true")
+data <- read_dta("C:/Users/hp/Downloads/angrist_krueger (1).dta")
+data <- as.data.table(data)
+data
+data[, qob_1 := (qob == 1)]
+data[, qob_2 := (qob == 2)]
+data[, qob_3 := (qob == 3)]
+data[, qob_4 := (qob == 4)]
+# ---- OLS and Binscatter ------------------------------------------------------
+feols(
+lwage ~ educ, # Regression formula
+data,
+vcov = "hc1" # ,r
+)
+binscatter <- binsreg(data$lwage, data$educ)
+binscatter
+library(ggplot2)
+# plot and add labels
+binscatter$bins_plot +
+labs(y = "Log wages", x = "Years of Completed Schooling")
+# ---- Simple (Wald) IV Estimator ----------------------------------------------
+# Formula y ~ exogenous | fixed effects | endogenous ~ instrument
+# 1 = constant, 0 = no fixed effects
+feols(
+lwage ~ 1 | 0 | educ ~ qob_1,
+data,
+vcov = "hc1"
+)
+data[,
+.(n = .N, mean = mean(lwage), sd = sd(lwage), min = min(lwage), max = max(lwage)),
+by = qob_1
+]
+data[,
+.(n = .N, mean = mean(educ), sd = sd(educ), min = min(educ), max = max(educ)),
+by = qob_1
+]
+# ---- Overidentified IV Estimator ---------------------------------------------
+feols(
+lwage ~ 1 | 0 | educ ~ qob_1 + qob_2 + qob_3,
+data,
+vcov = "hc1"
+)
+# collapse data by qob
+collapsed <- data[,
+.(lwage = mean(lwage), educ = mean(educ)),
+by = qob
+]
+collapsed
+# plot means
+plot(collapsed$educ, collapsed$lwage)
+# add regression line
+abline(feols(lwage ~ educ, collapsed))
+# ---- Putting the 2S in 2SLS --------------------------------------------------
+feols(
+lwage ~ 1 | yob | educ ~ qob_1 + qob_2 + qob_3,
+data,
+vcov = "hc1"
+)
+first_stage <- feols(educ ~ i(qob) | yob, data)
+first_stage
+data[, educ_hat := predict(first_stage)]
+feols(
+lwage ~ educ_hat | yob,
+data,
+vcov = "hc1"
+)
+# ---- Many IV Bias ------------------------------------------------------------
+feols(
+lwage ~ 1 | yob | educ ~ i(yob, qob_1) + i(yob, qob_2) + i(yob, qob_3),
+data,
+vcov = "hc1"
+)
+
+
+
+#3."Exploratory Data Analysis and Regression Analysis on mtcars Dataset"
+#"Heteroskedasticity and Ridge Regression Analysis: An Empirical Study"
+#"Fixed-Effects Estimation with the 'fixest' Package and PLFS 2017-18
+#Data Analysis"
+#Code:
+mtcars
+#dimension of the dataframe
+dim(mtcars)
+#structure of data
+str(mtcars)
+#install.packages("pastecs")
+library(pastecs)
+#summary statistics
+stat.desc(mtcars)
+#OLS
+model <- lm(mpg ~ disp + hp + wt + drat, data = mtcars)
+summary(model)
+model2 <- lm(mpg ~ hp + wt , data = mtcars)
+summary(model2)
+####Heteroskedasticity######
+###Create residual vs fitted plot
+plot(fitted(model),resid(model),xlab='Fitted values',ylab = 'Residuals', abline(0,
+0))
+#install.packages("lmtest")
+#install.packages("sandwich")
+library(lmtest)
+library(sandwich)
+##Goldfeld Quandt test- change the number of central observations and see what h
+appens
+gqtest(model, order.by = ~disp+hp, data = mtcars, fraction = 7)
+##Bruesch Pagan test
+bptest(model)
+##White test
+bptest(model, ~ disp*hp + I(disp^2) + I(hp^2), data = mtcars)
+###Perform weighted least squares/feasible GLS
+#define weights
+# estimating the variance of y for different values of x
+wgt<-1/lm(abs(model$residuals)~model$fitted.values)$fitted.values^2
+wls_model<-lm(mpg ~ disp + hp + wt + drat, data = mtcars, weights=wgt)
+summary(wls_model)
+####Heteroskedasticity robust standard errors
+coeftest(model, vcov = vcovHC(model, type = "HC0"))
+####Lab Date:28 August,2023####
+####Multicollinearity#####
+##Correlation matrix
+install.packages("corrplot")
+library(corrplot)
+corrplot(cor(mtcars))
+corrplot(cor(mtcars),method="color")
+corrplot(cor(mtcars),method="number",type="upper")
+#####Tolerances and variance inflation factor
+library(olsrr)
+ols_vif_tol(model)
+ols_eigen_cindex(model)
+##An conditional index value greater than 15 indicates presence of multicollinea
+rity and
+#greater than 30 indicates severe multicollinearity. Associated with conditional
+index
+#is output of variance decomposition for each principal component into intercept
+#and regressors. For each component where conditional index exceeds 15,
+#one should look for presence of variance concentration
+####Ridge Regression####
+install.packages("glmnet")
+library(glmnet)
+#Getting the independent variable
+x_var<-data.matrix(mtcars[,c("hp", "wt", "drat")])
+#Getting the dependent variable
+y_var<-mtcars[, "mpg"]
+#Setting the range of lambda values
+lambda_seq<-10^seq(2,-2, by=-.1)
+#Using glmnet function to build the ridge regression in r
+fit<-glmnet(x_var, y_var, alpha=0, lambda = lambda_seq)
+summary(fit)
+#Next task is to identify the optimal value of lambda that will result in a mini
+mum error
+#This can be obtained by using cv.glmnet( ) function
+ridge_cv<-cv.glmnet(x_var,y_var,alpha=0, lambda = lambda_seq)
+best_lambda<-ridge_cv$lambda.min
+best_lambda
+###Building the final model with the best lambda
+best_ridge<-glmnet(x_var,y_var,alpha=0,lambda = 0.5011872)
+coef(best_ridge)
+library(haven)
+finaldata_ihds2 <- read_dta("C:/Users/hp/Downloads/finaldata_ihds2.dta")
+View(finaldata_ihds2)
+###Task 1: For each regression get the heteroskedasticity robust SE and compare
+the standard errors of coefficients of 'science_eng' ####
+m1<-lm(log_earnings~science_eng ,data=finaldata_ihds2)
+summary(m1)
+m2<-lm(log_earnings~science_eng+first_div+second_div+repeated+eng_vfl+eng_lfl ,da
+ta=finaldata_ihds2)
+summary(m2)
+m3<-lm(log_earnings~science_eng+first_div+second_div+repeated+eng_vfl+eng_lfl+ ie
+du_level1+iedu_level4+iedu_level2+iedu_level3 ,data=finaldata_ihds2)
+summary(m3)
+finaldata_ihds2$District<-as.character(finaldata_ihds2$district)
+m4<-lm(log_earnings~science_eng+first_div+second_div+repeated+eng_vfl+eng_lfl+ ie
+du_level1+iedu_level4+iedu_level2+iedu_level3+District ,data=finaldata_ihds2)
+summary(m4)
+m5<-lm(log_earnings~science_eng+first_div+second_div+repeated+eng_vfl+eng_lfl+ ie
+du_level1+iedu_level4+iedu_level2+age_lab +sq_age+ married +sc +st +obc +muslim+
+christ +av_edu_min_i+District ,data=finaldata_ihds2)
+summary(m5)
+####Fixed-Effects Estimation in R with the fixest Package
+#install.packages("fixest")
+install.packages("AER")
+library(fixest)
+library(AER)
+data(Grunfeld)
+feols_model<- feols(invest ~ value + capital | firm + year , data = Grunfeld)
+# one-way cluster by firm
+feols_model<- feols(invest ~ value + capital | firm + year , data = Grunfeld, cl
+uster = ~firm)
+# two-way clustering by firm and year
+feols_model<- feols(invest ~ value + capital | firm + year , data = Grunfeld, cl
+uster = ~firm + year)
+# estimate linear two-way fixed effect model with two-way clusting
+feols_model<- feols(invest ~ value + capital | firm + year , data = Grunfeld, cl
+uster = ~firm + year)
+# get variance-covariance matrix with heteroskedasticity robust standard errors
+hetero = vcov(feols_model, se = "hetero")
+summary(feols_model)
+# Alternatively, use etable:
+etable(feols_model, tex = TRUE)
+summary(feols_model, .vcov = hetero) # hetero is the var-cov matrix that was pre
+viously computed using the vcov function
+# OR
+etable(feols_model, se = "white")
+####Task2: Import the following .dta file to R
+Class28_8 <- read_dta("C:/Users/hp/Downloads/Class28_8.dta")
+View(Class28_8)
+#This data is from PLFS 2017-18. The data includes employed males not working as
+casual labour.
+#It includes males working in household enterprises/self employed or as salaried
+individuals.
+#Q1: You want to examine whether social group-ie, caste identity affects earning
+s.
+#What should be your hypothesis?
+#What should your dependent and main explanatory variables be?
+#Q2: What variables should you control for, given your data?
+#Q3: Do you think you can estimate causal effect from this exercise?If yes why?I
+f not why?
+#Q4: Interpret the results you get by running the regressions in Q1 and Q2.
+#Now suppose you want to examine that self employment is not as rewarding as sal
+aried employment.
+#Q5: What will be your hypothesis?
+#What should your dependent and main explanatory variables be?
+#Q6: What variables should you control for, given your data?
+#Q7: Do you think any variable can potentially cause hetroskedasticity?
+#Q8: Can you say from your specification about existence of multicollinearity?Wh
+at should you do?
+#Q7: Do you think you can estimate causal effect from this exercise?If yes why?I
+f not why?
+#Q8: Interpret the results you get by running the OLS regressions in Q5 and Q6.
+feols_model<- feols(GrossMonthlyEarnings ~ 0+ SC |
+StateCode , data = Class28_8,
+weights=Weight,cluster = ~Fsu)
+
+
+#4. Autocorrelation:
+#Code:
+rm(list = ls())
+# Install and load the readxl package
+install.packages("readxl")
+library(readxl)
+# Read the Excel file
+ExportImportOil <- read_excel("C:/Users/hp/Downloads/ExportImportOil.xlsx")
+View(ExportImportOil)
+ExportImportOil
+library(stats)
+# Rename the variables with spaces using backticks
+ExportImportOil$`Oil Exports` <- ExportImportOil$`Oil Exports`
+ExportImportOil$`Oil Imports` <- ExportImportOil$`Oil Imports`
+# Fit the linear regression model
+model <- lm(`Oil Exports` ~ `Oil Imports`, data = ExportImportOil)
+summary(model)
+acf(model$residuals, type = "correlation")
+pacf(model$residuals)
+library(lmtest)
+dwtest(model)
+bgtest(model, order = 2)
+bgtest(model, order = 3)
+bgtest(model, order = 4)
+model1<-lm(Non.Oil.Imports~Oil.Imports, data = ExportImportOil)
+summary(model1)
+acf(model1$residuals, type = "correlation")
+pacf(model1$residuals)
+dwtest(model1)
+bgtest(model, order = 2)
+bgtest(model, order = 3)
+bgtest(model, order = 4)
+#Time series Classical Decomposition
+data.ts <- ts(ExportImportOil$'Oil Imports', frequency = 12)
+data.ts
+ts.plot(data.ts, xlab="Time Period", ylab="Oil Imports", main="Monthly Oil Import
+s")
+plot(pacf(ExportImportOil$Oil.Imports,plot=FALSE),main="Partial Autocorrelation P
+lot")
+plot(acf(ExportImportOil$Oil.Imports,plot=FALSE),main="Autocorrelation Plot")
+decomp<-decompose(data.ts)
+plot(decomp)
+decomp$seasonal
+decomp$trend
+decomp$random
+seasadj <- data.ts - decomp$seasonal
+plot(seasadj)
+#decomposition by loess method.
+decomp1<-stl(data.ts,s.window="periodic")
+plot(decomp1)
+seasonal_stl_model1 <- decomp1$time.series[,1]
+trend_stl_model1 <- decomp1$time.series[,2]
+random_stl_model1 <- decomp1$time.series[,3]
+seasadj1 <- data.ts - seasonal_stl_model1
+trendadj1<-data.ts-trend_stl_model1
+plot(trendadj1)
+plot(pacf(ExportImportOil$Oil.Imports,plot=FALSE),main="Partial Autocorrelation P
+lot")
+plot(acf(ExportImportOil$Non.Oil.Imports,plot=FALSE),main="Partial Autocorrelatio
+n Plot")
+Diff1<-diff(ExportImportOil$Non.Oil.Exports, differences=1)
+plot.ts(Diff1)
+Diff21<-diff(trendadj1, differences=2)
+plot.ts(Diff21)
+Diff31<-diff(trendadj1, differences=3)
+plot.ts(Diff31)
+####Forecasting-Holt Winters
+HW1 <- HoltWinters(data.ts)
+HW2 <- HoltWinters(data.ts, alpha=0.2, beta=0.1, gamma=0.1)
+HW1.pred <- predict(HW1, 6, prediction.interval = TRUE, level=0.95)
+
+
 

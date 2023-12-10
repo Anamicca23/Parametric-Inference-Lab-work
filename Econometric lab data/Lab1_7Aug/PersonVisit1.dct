@@ -1,0 +1,131 @@
+infix dictionary using "FHH_FV.TXT" 
+{
+str FileIdentificatiin 1-4
+Schedule 5-7
+str2 Quarter 8-9
+str2 Visit 10-11
+Sector 12
+str2 StateCode 13-14
+str2 DistrictCode 15-16
+NSSRegion 17-19
+Stratum 20-21
+SubStratum 22-23
+FODSubRegion 25-28
+str5 FSU 29-33
+str SampleNo 34
+str SSSNo 35
+str2 SampleHhdNo 36-37
+str2 PersonSrlNo 38-39
+RelationToHead 40
+Sex 41
+Age 42-44
+MaritalStatus 45
+GenEduLevel 46-47
+TechnicalEduLevel 48-49
+YearsFormalEdu 50-51
+CurrentAttendanceStatus 52-53
+ReceivedVocationalTraining 54
+Training365days 55
+FieldVocTraining 56-57
+DurationVocTraining 58
+TypeVocTraining 59
+FundingSourceTraining 60
+PrincSatusCode 61-62
+str5 PrincNIC5Digit 63-67
+str3 PrincNCO3Digit 68-70
+SubsidiaryActivity 71
+PrincWorkplaceLocation 72-73
+PrincEnterpriseType 74-75
+PrincNumWorkers 76
+PrincJobContract 77
+PrincPaidLeave 78
+PrincSocialSecurity 79
+SubsSatusCode 80-81
+SubsNIC5Digit 82-86
+SubsNCO3Digit 87-89
+SubsWorkplaceLocation 90-91
+SubsEnterpriseType 92-93
+SubsNumWorkers 94
+SubsJobContract 95
+SubsPaidLeave 96
+SubsSocialSecurity 97
+Activity1StatusCodeD7 98-99
+NIC2digitActivity1D7 100-101
+HoursWorkedAct1Day7 102-103
+WageAct1Day7 104-108
+Activity2StatusCodeD7 109-110
+NIC2digitActivity2D7 111-112
+HoursWorkedAct2Day7 113-114
+WageAct2Day7 115-119
+TotalHoursDay7 120-121
+AdditionalHoursDay7 122-123
+Activity1StatusCodeD6 124-125
+NIC2digitActivity1D6 126-127
+HoursWorkedAct1Day6 128-129
+WageAct1Day6 130-134
+Activity2StatusCodeD6 135-136
+NIC2digitActivity2D6 137-138
+HoursWorkedAct2Day6 139-140
+WageAct2Day6 141-145
+TotalHoursDay6 146-147
+AdditionalHoursDay6 148-149 
+Activity1StatusCodeD5 150-151
+NIC2digitActivity1D5 152-153
+HoursWorkedAct1Day5 154-155
+WageAct1Day5 156-160
+Activity2StatusCodeD5 161-162
+NIC2digitActivity2D5 163-164
+HoursWorkedAct2Day5 165-166
+WageAct2Day5 167-171
+TotalHoursDay5 172-173
+AdditionalHoursDay5 174-175 
+Activity1StatusCodeD4 176-177
+NIC2digitActivity1D4 178-179
+HoursWorkedAct1Day4 180-181
+WageAct1Day4 182-186
+Activity2StatusCodeD4 187-188
+NIC2digitActivity2D4 189-190
+HoursWorkedAct2Day4 191-192
+WageAct2Day4 193-197
+TotalHoursDay4 198-199
+AdditionalHoursDay4 200-201
+Activity1StatusCodeD3 202-203
+NIC2digitActivity1D3 204-205
+HoursWorkedAct1Day3 206-207
+WageAct1Day3 208-212
+Activity2StatusCodeD3 213-214
+NIC2digitActivity2D3 215-216
+HoursWorkedAct2Day3 217-218
+WageAct2Day3 219-223
+TotalHoursDay3 224-225
+AdditionalHoursDay3 226-227
+Activity1StatusCodeD2 228-229
+NIC2digitActivity1D2 230-231
+HoursWorkedAct1Day2 232-233
+WageAct1Day2 234-238
+Activity2StatusCodeD2 239-240 
+NIC2digitActivity2D2 241-242
+HoursWorkedAct2Day2 243-244
+WageAct2Day2 245-249
+TotalHoursDay2 250-251
+AdditionalHoursDay2 252-253
+Activity1StatusCodeD1 254-255
+NIC2digitActivity1D1 256-257
+HoursWorkedAct1Day1 258-259
+WageAct1Day1 260-264
+Activity2StatusCodeD1 265-266 
+NIC2digitActivity2D1 267-268
+HoursWorkedAct2Day1 269-270
+WageAct2Day1 271-275
+TotalHoursDay1 276-277
+AdditionalHoursDay1 278-279
+CurrentWeeklyStatus 280-281
+CWSIndustryCode 282-283
+CWSOccupationCode 284-286
+EarningsSalariedAct 287-294
+EarningsSelfEmploy 295-302
+NSS 303-305
+NSC 306-308
+Multiplier 309-318
+No_Qtr 319
+}

@@ -1,0 +1,32 @@
+infix dictionary 
+{
+str FileIdentificatiin 1-4
+Schedule 5-7
+str2 Quarter 8-9
+str2 Visit 10-11
+Sector 12
+str2 StateCode 13-14
+str2 DistrictCode 15-16
+NSSRegion 17-19
+Stratum 20-21
+SubStratum 22-23
+FODSubRegion 25-28
+str5 FSU 29-33
+str SampleNo 34
+str SSSNo 35
+str2 SampleHhdNo 36-37
+MonthSurvey 38-39
+SubstitutionCode 42
+HouseholdSize 43-44
+HouseholdType 45
+Religion 46
+SocialGroup 47
+HUMonthConsExp 48-55
+Informant 56-57
+SurveyDate 58-65
+CanvassingTime 66-69
+NSS 70-72
+NSC 73-75
+Multiplier 76-85
+No_Qtr 86
+}
